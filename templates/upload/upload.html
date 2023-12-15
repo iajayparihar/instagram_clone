@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block userStyle %}
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="{% static 'upload/style.css' %}">
+{% endblock userStyle %}
+
+{% block content %}	
+	<div class="container">
+		<input type="file" id="file" accept="image/*" hidden>
+		<div class="img-area" data-img="">
+			<i class='bx bxs-cloud-upload icon'></i>
+			<h3>Upload Image</h3>
+			<p>Image size must be less than <span>2MB</span></p>
+		</div>
+		<button class="select-image">Select Image</button>
+	</div>
+	
+	<script src="{% static 'upload/script.js' %}"></script>
+</body>
+</html>
+
+{% endblock content %}
