@@ -12,3 +12,6 @@ def chat(request):
 
 def profile(request):
     return render(request,"profile/profile.html")
+
+def reels(request):
+    return render(request,'reels/reels.html')

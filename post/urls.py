@@ -6,4 +6,5 @@ urlpatterns = [
     path('upload/',views.upload, name = "upload"),
     path('chat/',views.chat, name = "chat"),
     path('profile/',views.profile, name = "profile"),
+    path('reels/',views.reels, name = "reels"),
 ]
