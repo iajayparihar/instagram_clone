@@ -6,8 +6,9 @@
 <link rel="stylesheet" href="{% static 'upload/style.css' %}">
 {% endblock userStyle %}
 
-{% block content %}	
-	<div class="container">
+{% block content %}
+<div class="container">
+	<form action="file_upload/" method="post">
 		<input type="file" id="file" accept="image/*" hidden>
 		<div class="img-area" data-img="">
 			<i class='bx bxs-cloud-upload icon'></i>
@@ -15,10 +16,13 @@
 			<p>Image size must be less than <span>2MB</span></p>
 		</div>
 		<button class="select-image">Select Image</button>
-	</div>
-	
-	<script src="{% static 'upload/script.js' %}"></script>
+		
+	</form>
+</div>
+
+<script src="{% static 'upload/script.js' %}"></script>
 </body>
+
 </html>
 
 {% endblock content %}

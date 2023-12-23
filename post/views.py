@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 # Create your views here.
 def index(request):
@@ -15,3 +15,7 @@ def profile(request):
 
 def reels(request):
     return render(request,'reels/reels.html')
+
+#here we can save over file to database / redirect to same page again
+def file_upload(request):
+    return render(request,"upload/upload.html")
