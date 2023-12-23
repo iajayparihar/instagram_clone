@@ -6,6 +6,13 @@ def index(request):
     return render(request,'index.html')
 
 def upload(request):
+    if request.method == 'POST':
+        # upload_pic = request.method.get('pic')
+        # upload_cap = request.method.get('cap')
+
+        return render(request,"upload/upload.html",{'image':request.method})
+
+    print('i am in get ')
     return render(request,'upload/upload.html')
 
 def chat(request):
