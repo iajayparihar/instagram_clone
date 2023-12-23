@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from .models import Post,Comment
 
 # Create your views here.
 def index(request):
@@ -11,7 +12,9 @@ def chat(request):
     return render(request,'chat/chat.html')
 
 def profile(request):
-    return render(request,"profile/profile.html")
+    allpost = Post.objects.all()
+    print(allpost)
+    return render(request,"profile/profile.html",{'allpost':allpost})
 
 def reels(request):
     return render(request,'reels/reels.html')
