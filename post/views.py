@@ -7,11 +7,11 @@ def index(request):
 
 def upload(request):
     if request.method == 'POST':
-        # upload_pic = request.method.get('pic')
-        # upload_cap = request.method.get('cap')
+        upload_pic = request.POST.get('pic')
+        upload_cap = request.POST.get('cap')
+#===============pending============
 
-        return render(request,"upload/upload.html",{'image':request.method})
-
+        return render(request,"upload/upload.html",{'image':"data is saved."})
     print('i am in get ')
     return render(request,'upload/upload.html')
 
