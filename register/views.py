@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 # from post.models import User
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login 
+from django.contrib.auth import authenticate,login, logout
+from django.contrib.auth.decorators import login_required
+
 # login->Session maintain
 #authenticate -> password decription
 
@@ -30,8 +32,10 @@ def user_register(request):
     )
     user.set_password(password)
     user.save()
-    return render(request,'index.html')
+    messages.success(request, "Account created succesfully.")
+    return redirect('/')
 
+# @login_required
 def user_login(request):
     if request.method != 'POST':
         return render(request,'register/login.html')
@@ -50,5 +54,9 @@ def user_login(request):
     else:
         login(request,user)
         return render(request,'index.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')
 
 
