@@ -3,9 +3,8 @@ from django.contrib import messages
 # from post.models import User
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login, logout
-from django.contrib.auth.decorators import login_required
 
-# login->Session maintain
+# login -> Session maintain
 #authenticate -> password decription
 
 # Create your views here.
@@ -35,7 +34,7 @@ def user_register(request):
     messages.success(request, "Account created succesfully.")
     return redirect('/')
 
-# @login_required
+
 def user_login(request):
     if request.method != 'POST':
         return render(request,'register/login.html')

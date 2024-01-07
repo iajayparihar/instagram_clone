@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            {% comment %}  {% endcomment %}
+
             <div class="post">
                 <div class="info">
                     <div class="user">
@@ -89,8 +89,8 @@
                     <img src="{% static 'img/ajay.jpg' %}" alt="">
                 </div>
                 <div>
-                    <p class="username">Ajay Parihar</p>
-                    <p class="sub-text">@ajayparihar</p>
+                    <p class="username">{{ request.user }}</p>
+                    <p class="sub-text">@{{request.user.username}}</p>
                 </div>
                 <button class="action-btn">switch</button>
             </div>

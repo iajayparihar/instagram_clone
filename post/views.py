@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from .models import Post,Comment
 
 # Create your views here.
+from django.contrib.auth.decorators import login_required
+@login_required
 def index(request):
     return render(request,'index.html')
 
