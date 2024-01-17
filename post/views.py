@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
-from .models import Post,Comment
+from .models import Post,Comment,User,Profile
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
+
 @login_required
 def index(request):
     return render(request,'index.html')
@@ -21,9 +22,10 @@ def chat(request):
     return render(request,'chat/chat.html')
 
 def profile(request):
-    allpost = Post.objects.all()
-    print(allpost)
-    return render(request,"profile/profile.html",{'allpost':allpost})
+    allProfile_details = Profile.objects.all()
+    allPost = Post.objects.all()
+
+    return render(request,"profile/profile.html",{'allProfile_details':allProfile_details, 'allpost': allPost})
 
 def reels(request):
     return render(request,'reels/reels.html')

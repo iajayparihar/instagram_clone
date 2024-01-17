@@ -34,17 +34,30 @@
     <div class="header-wrap">
 
       
-      <div class="profile-pic">
-        <img src="{% static 'profile/images/gallery-2.jpg' %}" alt="profile-logo" />
+
+      {% if allProfile_details %}
+        <div class="profile-pic">
+      {% for post in allProfile_details %}
+      {% if post %}
+      <img src="{{ post.profile_image.url }}" alt="profile-logo" />
+      {% endif %}
+      {% endfor %}
       </div>
+      {% else %}
+      <div class="profile-pic">
+      <img src="{% static 'profile/images/gallery-4.jpg' %}" alt="profile-logo" />
+      {% endif %}
+      </div>
+      
       <div class="profile-info">
         <div class="title mb-4">
-          <h2>apple</h2>
+          <h2>{{ request.user.first_name }} {{ request.user.last_name }}</h2>
           <span class="verfied-icon"></span>
           <button class="primary">Follow</button>
         </div>
         <div class="desktop-only">
           <div class="details row">
+
             <ul>
               <li><span>722</span> posts</li>
               <li><span>25.1m</span> followers</li>
@@ -52,16 +65,28 @@
             </ul>
           </div>
           <div class="descriptions row last">
-            <h1>apple</h1>
-            <span>
-              Everyone has a story to tell.
-              <br />
-              Tag <a>#ShotoniPhone</a> to take part.
-            </span>
-          </div>
+            <h1>@{{ request.user.username }}</h1>
+
+            
+            {% if allProfile_details %}
+              
+              {% for post in allProfile_details %}
+                {% if post %}
+                <span>{{ post.bio}}</span>
+                {% endif %}
+              {% endfor %}
+                
+            {% else %}
+            <span> Default bio : Instagram made by Ajay</span>
+            {% endif %}
+            
+            </div>
         </div>
       </div>
     </div>
+
+
+
     <div class="profile-info mobile-only">
       <div class="descriptions row">
         <h1>apple</h1>
@@ -213,6 +238,7 @@
 {% comment %} first we right view for posting images {% endcomment %}
   <div class="gallery">
     
+    <!-- code for empty query -->
     {% for post in allpost %}
     <div class="gallery-item">
       
@@ -222,7 +248,6 @@
       {% else %}
       <img alt="gallery-post" src="{% static 'profile/images/404.jpg' %}" />
       {% endif %}
-        
     </div>
     {% endfor %}
       
