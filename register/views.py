@@ -11,11 +11,11 @@ from django.contrib.auth import authenticate,login, logout
 def user_register(request):
     if request.method != 'POST':
         return render(request,'register/register.html')
-
-    email = request.POST.get('email')
+        
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
     username = request.POST.get('username')
+    email = request.POST.get('email')
     password = request.POST.get('password')
 
     user = User.objects.filter(username=username)

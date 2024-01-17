@@ -1,18 +1,18 @@
-from django.db import models
+# from django.db import models
 
-# Create your models here.
-class fun(models.Model):
-    """Model definition for fun."""
+# # Create your models here.
+# class fun(models.Model):
+#     """Model definition for fun."""
 
-    # TODO: Define fields here
-    name = models.CharField(max_length=50)
+#    #  Define fields here
+#     name = models.CharField(max_length=50)
 
-    class Meta:
-        """Meta definition for fun."""
+#     class Meta:
+#         """Meta definition for fun."""
 
-        verbose_name = 'fun'
-        verbose_name_plural = 'funs'
+#         verbose_name = 'fun'
+#         verbose_name_plural = 'funs'
 
-    def __str__(self):
-        """Unicode representation of fun."""
-        return self.name
+#     def __str__(self):
+#         """Unicode representation of fun."""
+#         return self.name
