@@ -8,7 +8,7 @@
 
 
 {% block content %}
-{% comment %} don't touch back navbar , but we use base nav bar{% endcomment %}
+<!-- don't touch back navbar , but we use base nav bar -->
 <nav>
   <div class="mock"></div>
   <div class="fixed">
@@ -27,59 +27,52 @@
     </div>
   </div>
 </nav>
-{% comment %} don't touch {% endcomment %}
+<!--   don't touch -->
 
 <main>
   <header>
     <div class="header-wrap">
 
-      
-
-      {% if allProfile_details %}
-        <div class="profile-pic">
-      {% for post in allProfile_details %}
-      {% if post %}
-      <img src="{{ post.profile_image.url }}" alt="profile-logo" />
-      {% endif %}
-      {% endfor %}
-      </div>
-      {% else %}
       <div class="profile-pic">
-      <img src="{% static 'profile/images/gallery-4.jpg' %}" alt="profile-logo" />
-      {% endif %}
+      {% if profile %}
+        {% if profile.profile_image  %}
+          <img src="{{ profile.profile_image.url }}" alt="profile-logo" />
+        {% else %}
+          <div class="profile-pic">
+            <img src="{% static 'insta.png' %}" alt="profile-logo" />
+          </div>
+        {% endif %}
       </div>
+      {% endif %}
       
       <div class="profile-info">
         <div class="title mb-4">
           <h2>{{ request.user.first_name }} {{ request.user.last_name }}</h2>
           <span class="verfied-icon"></span>
-          <button class="primary">Follow</button>
+
+          <a href="{% url 'register_profile' %}" class="primary btn btn-secondary">edit profile</a>
+          
         </div>
         <div class="desktop-only">
           <div class="details row">
 
             <ul>
-              <li><span>722</span> posts</li>
-              <li><span>25.1m</span> followers</li>
-              <li><span>6</span> following</li>
+              
+              <li><span>{{post_count}}</span> posts</li>
+              <li><span>0</span> followers</li>
+              <li><span>0</span> following</li>
+              
             </ul>
           </div>
           <div class="descriptions row last">
             <h1>@{{ request.user.username }}</h1>
-
             
-            {% if allProfile_details %}
-              
-              {% for post in allProfile_details %}
-                {% if post %}
-                <span>{{ post.bio}}</span>
-                {% endif %}
-              {% endfor %}
-                
+            {% if profile %}
+                <span>{{ profile.bio}}</span>
+                <span>{{ profile.link}}</span>
             {% else %}
             <span> Default bio : Instagram made by Ajay</span>
             {% endif %}
-            
             </div>
         </div>
       </div>
@@ -87,16 +80,6 @@
 
 
 
-    <div class="profile-info mobile-only">
-      <div class="descriptions row">
-        <h1>apple</h1>
-        <span>
-          Everyone has a story to tell.
-          <br />
-          Tag <a>#ShotoniPhone</a> to take part.
-        </span>
-      </div>
-    </div>
   </header>
 
 

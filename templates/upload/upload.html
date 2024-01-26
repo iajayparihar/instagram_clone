@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="container">
-	<form action="{% url 'upload'  %}" method="post">
+	<form action="{% url 'upload'  %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<input type="file" id="file" name="pic" accept="image/*">
 		<div class="img-area" data-img="">

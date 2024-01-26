@@ -86,14 +86,26 @@
         <div class="right-col">
             <div class="profile-card">
                 <div class="profile-pic">
-                    <img src="{% static 'img/ajay.jpg' %}" alt="">
+                    <a href="{% url 'profile' %}">
+                        
+                        {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="">
+                            {% else %}
+                            <img src="{% static 'insta.png' %}" alt="img not found">
+                        {% endif %}
+                            
+                    </a>
                 </div>
                 <div>
-                    <p class="username">{{ request.user }}</p>
+                    <a href="{% url 'profile' %}">
+                        <p class="username">{{ request.user.first_name }} {{request.user.last_name}}</p>
+                    </a>
                     <p class="sub-text">@{{request.user.username}}</p>
                 </div>
                 <button class="action-btn">switch</button>
             </div>
+
+
             <p class="suggestion-text">Suggestions for you</p>
             <div class="profile-card">
                 <div class="profile-pic">
