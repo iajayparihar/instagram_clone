@@ -1,11 +1,42 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 # from post.models import User
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login, logout
-
+from post.models import Profile
+from .forms import ProfileForm
 # login -> Session maintain
 #authenticate -> password decription
+
+#profile edit 
+def register_profile(request):
+    # ins = get_object_or_404(User, id=request.user.id)
+    # print(ins)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = request.user
+
+            if user.is_authenticated:
+                bio=form.cleaned_data.get('bio')
+                link=form.cleaned_data.get('link')
+                profile_image=form.cleaned_data.get('profile_image')
+                if profile_image:
+                    print('profile image available.................................................')
+
+                temp = Profile.objects.get(user=user)
+                print('user infor .............', temp)
+                temp.user = user
+                temp.bio = bio
+                temp.link = link
+                temp.profile_image = profile_image
+                temp.save()
+
+            return redirect('/enter/profile')
+    else:
+        form = ProfileForm()
+
+    return render(request, 'profile/profile_update.html', {'form': form})
 
 # Create your views here.
 def user_register(request):
@@ -32,6 +63,12 @@ def user_register(request):
     user.set_password(password)
     user.save()
     messages.success(request, "Account created succesfully.")
+
+    #---also save user profile when user is chreated---
+
+    prof = Profile.objects.create(user=user)
+    prof.save()
+
     return redirect('/')
 
 
