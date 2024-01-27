@@ -106,47 +106,42 @@
             </div>
 
 
-            <p class="suggestion-text">Suggestions for you</p>
-            <div class="profile-card">
-                <div class="profile-pic">
-                    <img src="{% static 'img/cover 9.png' %}" alt="">
+            <p class="suggestion-text">Suggestions for you</p>            
+            
+            {% if all_profile %}
+            {% for prof in all_profile %}
+                {% if prof.user != request.user %}
+                <div class="profile-card">
+                    <div class="profile-pic">
+                        
+                        {% if prof.profile_image %}
+                        <img src="{{ prof.profile_image.url }}" alt="">
+                            {% else %}
+                            <img src="{% static 'insta.png' %}" alt="">
+                        {% endif %}
+                            
+                    </div>
+                    
+                    <div>
+                    <form action="/enter/other_user/" method="get">
+                    <button type="submit" class="username" style="text-align: center; background: none;" name="other_user" value="{{ prof.user.id }}">{{ prof.user }}</button>
+                    <p class="sub-text">followed by user</p>
+                    </form>
                 </div>
-                <div>
-                    <p class="username">modern_web_channel</p>
-                    <p class="sub-text">followed bu user</p>
+
+                    <form action="follow_friendship/{{prof.user.username}}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn">Follow</button>
+                    </form>
+
                 </div>
-                <button class="action-btn">follow</button>
-            </div>
-            <div class="profile-card">
-                <div class="profile-pic">
-                    <img src="{% static 'img/cover 10.png' %}" alt="">
-                </div>
-                <div>
-                    <p class="username">modern_web_channel</p>
-                    <p class="sub-text">followed bu user</p>
-                </div>
-                <button class="action-btn">follow</button>
-            </div>
-            <div class="profile-card">
-                <div class="profile-pic">
-                    <img src="img/cover 11.png" alt="">
-                </div>
-                <div>
-                    <p class="username">modern_web_channel</p>
-                    <p class="sub-text">followed bu user</p>
-                </div>
-                <button class="action-btn">follow</button>
-            </div>
-            <div class="profile-card">
-                <div class="profile-pic">
-                    <img src="img/cover 12.png" alt="">
-                </div>
-                <div>
-                    <p class="username">modern_web_channel</p>
-                    <p class="sub-text">followed bu user</p>
-                </div>
-                <button class="action-btn">follow</button>
-            </div>
+                
+                {% endif %}
+
+                {% endfor %}
+            {% endif %}
+            
+            
             
         </div>
     </div>

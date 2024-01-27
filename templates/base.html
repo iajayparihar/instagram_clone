@@ -120,8 +120,16 @@
                     <button class="profile-button">
                         <div class="profile-button__border"></div>
                         <a href="{% url 'profile' %}">
-                            <div class="profile-button__picture">
-                                <img src="{% static 'img/ajay.jpg' %}" alt="User Picture">
+                            <div class="profile-button__picture ">
+                                
+                                {% if nav_profile %}
+                                <img src="{{ nav_profile.url }}" alt="User Picture">
+                                {% elif profile.profile_image %}
+                                <img src="{{ profile.profile_image.url }}" alt="User Picture">
+                                {% else %}
+                                    <img src="{% static 'insta.png' %}" alt="insta user">
+                                {% endif %}
+                                    
                             </div>
                         </a>
                     </button>
