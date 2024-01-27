@@ -46,7 +46,7 @@ class Like(models.Model):
 class Friendship(models.Model):
     sender = models.ForeignKey(User,on_delete=models.CASCADE, related_name='sent_requests')
     receiver = models.ForeignKey(User,on_delete=models.CASCADE, related_name='received_requests')
-    status = models.CharField(max_length=50, default='pending') # pending acceptd rejected
+    status = models.CharField(max_length=50, default='pending') # pending accepted rejected
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.sender}, {self.status}"
