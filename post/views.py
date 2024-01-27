@@ -59,6 +59,7 @@ def other_user(request):
         
         return render(request, "profile/profile.html", {'profile': new_user_prof, 'allpost': new_user_post, 'post_count': no_of_post,'user':user,'nav_profile':nav_profile_image})
 
+
 def profile(request):
     cur_user = request.user
     user = User.objects.get(username=cur_user)
@@ -69,29 +70,52 @@ def profile(request):
     nav_profile = Profile.objects.get(user=request.user)
     nav_profile_image = nav_profile.profile_image
 
-    return render(request,"profile/profile.html", {'profile': allProfile_details, 'allpost': cur_user_post, 'post_count': post_count,"user":user,'nav_profile':nav_profile_image})
+    cur = request.user
+    
+    # Use get_object_or_404 to handle the case when the profile does not exist
+    user_profile = get_object_or_404(Profile, user=cur)
+
+    # Retrieve followers and following for the user
+    user_followers = len(user_profile.followed_by.all())
+    user_following = len(user_profile.follows.all())
+
+    return render(request, "profile/profile.html", {
+        'profile': allProfile_details,
+        'allpost': cur_user_post,
+        'post_count': post_count,
+        'user': user,
+        'nav_profile': nav_profile_image,
+        'user_followers': user_followers,
+        'user_following': user_following,
+    })
 
 def followers_count(request):
     if request.method == "POST":
         value = request.POST.get('value')
         user = request.POST.get('user')
         follower = request.POST.get('follower')
-        print("0000000000000000000000000000000000000",value,user,follower)
 
         sender = User.objects.get(username=user)
         receiver = User.objects.get(username=follower)
+
+        sender_profile = Profile.objects.get(user=sender)
+        receiver_profile = Profile.objects.get(user=receiver)
+
         if value == "follow":
-            fri = Friendship.objects.create(sender=sender,receiver=receiver)
-            fri.save()
+            # Add the follower to the follows field of the sender's profile
+            sender_profile.follows.add(receiver_profile)
         else:
-            #for unfollow
-            fri = Friendship.objects.filter(sender=sender,receiver=receiver)
-            fri.delete()
+            # For unfollow, remove the follower from the follows field of the sender's profile
+            sender_profile.follows.remove(receiver_profile)
+
         other_user_id = User.objects.get(username=follower)
         other_user_id = other_user_id.id
 
-    return redirect(f'/enter/other_user/?other_user={str(other_user_id)}')
+        return redirect(f'/enter/other_user/?other_user={str(other_user_id)}')
 
+    # Handle the case when the method is not POST
+    # You might want to add additional logic or redirect to an appropriate page
+    return redirect('/enter')
 
 def reels(request):
     return render(request,'reels/reels.html')
