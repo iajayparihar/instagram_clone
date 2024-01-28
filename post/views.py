@@ -18,13 +18,6 @@ def index(request):
     cur_user = request.user
     all_profile = Profile.objects.all()
 
-    # friends = Friendship.objects.all()
-    # <QuerySet [<Friendship: ajay123, pending>, <Friendship: ajay123, pending>]>
-    # ajay123 vij
-    # for i in range(len(friends)):
-    #     if friends[i].sender == request.user and 
-    # print("/////////////////////////////////////////////////////////",friends[0].sender,friends[0].receiver)
-
     prof = Profile.objects.get(user=cur_user)
 
     return render(request,'index.html',{'profile': prof,'all_profile':all_profile})
@@ -57,7 +50,15 @@ def other_user(request):
         nav_profile = Profile.objects.get(user=request.user)
         nav_profile_image = nav_profile.profile_image
         
-        return render(request, "profile/profile.html", {'profile': new_user_prof, 'allpost': new_user_post, 'post_count': no_of_post,'user':user,'nav_profile':nav_profile_image})
+        # Use get_object_or_404 to handle the case when the profile does not exist
+        user_profile = get_object_or_404(Profile, user=user)
+
+        # Retrieve followers and following for the user
+        user_followers = len(user_profile.followed_by.all())
+        user_following = len(user_profile.follows.all())
+
+        return render(request, "profile/profile.html", {'profile': new_user_prof, 'allpost': new_user_post, 'post_count': no_of_post,'user':user,'nav_profile':nav_profile_image,'user_followers': user_followers,
+        'user_following': user_following})
 
 
 def profile(request):
