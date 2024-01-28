@@ -12,4 +12,6 @@ urlpatterns = [
     path('follow_friendship/<str:receiver>/',views.follow_friendship,name = 'follow_friendship'),
     path('followers_count/',views.followers_count,name='followers_count'),
     path('other_user/',views.other_user,name='other_user'),
+    path('like/<int:post_id>',views.like,name= 'like'),
+    path('unlike/<int:post_id>',views.unlike,name= 'unlike'),
 ]
