@@ -19,7 +19,9 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/%Y/%m/%d/')
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
-    
+    #recent post come's first 
+    class Meta:
+        ordering = ['-created_at']
     def __str__(self):
         return f"{self.user.username} - {self.created_at}"
 
