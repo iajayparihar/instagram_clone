@@ -43,12 +43,13 @@ def other_user(request):
     if request.method == "GET":
         new_user_id = int(request.GET.get('other_user'))
         user = User.objects.get(id=new_user_id)
+        #other user prof
         new_user_prof = get_object_or_404(Profile, user=new_user_id)
         new_user_post = Post.objects.filter(user=new_user_id)
         no_of_post = len(new_user_post)
-        
-        nav_profile = Profile.objects.get(user=request.user)
-        nav_profile_image = nav_profile.profile_image
+        # cur user prof
+        cur_profile = Profile.objects.get(user=request.user)
+        nav_profile_image = cur_profile.profile_image
         
         # Use get_object_or_404 to handle the case when the profile does not exist
         user_profile = get_object_or_404(Profile, user=user)
@@ -57,8 +58,16 @@ def other_user(request):
         user_followers = len(user_profile.followed_by.all())
         user_following = len(user_profile.follows.all())
 
+        # follow unfollow 
+        cur_user_follows = cur_profile.follows.all()
+        if (new_user_prof in cur_user_follows):
+            follow_button_value = "unfollow"
+        else:
+            follow_button_value = "follow"
+
+
         return render(request, "profile/profile.html", {'profile': new_user_prof, 'allpost': new_user_post, 'post_count': no_of_post,'user':user,'nav_profile':nav_profile_image,'user_followers': user_followers,
-        'user_following': user_following})
+        'user_following': user_following,"follow_button_value":follow_button_value})
 
 
 def profile(request):
