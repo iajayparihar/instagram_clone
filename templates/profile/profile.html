@@ -58,9 +58,15 @@
             <input type="hidden" name="user" value="{{request.user}}" readonly>
             <input type="hidden" name="follower" value="{{user.username}}">
             
+            
+            {% if follow_button_value == 'follow' %}
             <input type="hidden" name="value" value="follow" readonly>
-
-            <button type="submit" class="primary btn btn-primary ">Follow</button>
+            <button type="submit" class="primary btn btn-primary " style="width: auto;">Follow</button>
+            {% else %}
+            <input type="hidden" name="value" value="Unfollow" readonly>
+            <button type="submit" class="primary btn btn-primary" style="width: auto;">Unfollow</button>
+            {% endif %}
+              
           </form>
           {% endif %}
             
