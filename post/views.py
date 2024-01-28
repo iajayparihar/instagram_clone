@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Post,Comment,User,Profile,Friendship
-
+from .models import Post,Comment,User,Profile,Friendship,Like
+from django.http import HttpResponseRedirect
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-
+from django.urls import reverse
+#this fun is not used yet
 @login_required
 def follow_friendship(request,receiver):
     rec = User.objects.get(username=receiver)
@@ -17,10 +18,54 @@ def follow_friendship(request,receiver):
 def index(request):
     cur_user = request.user
     all_profile = Profile.objects.all()
-
     prof = Profile.objects.get(user=cur_user)
 
-    return render(request,'index.html',{'profile': prof,'all_profile':all_profile})
+    # showing post in index page
+    all_post = Post.objects.all()
+    
+    for post in all_post:
+        post.liked_by_user = Like.objects.filter(user=cur_user, post=post).exists()
+
+    return render(request,'index.html',{'profile': prof,'all_profile':all_profile,'all_posts':all_post})
+
+
+@login_required
+def like(request, post_id):
+    cur_user = request.user
+    post = Post.objects.get(id=post_id)
+    current_likes = post.likes
+    liked = Like.objects.filter(user=cur_user,post=post).count()
+    
+    # Check if the user has already liked the post
+    if not liked:
+        # If not, create a new Like object and increment the likes count
+        l = Like.objects.create(user=cur_user, post=post)
+        l.save()
+        post.likes += 1
+        post.save()
+
+    return redirect('index')
+
+
+@login_required
+def unlike(request, post_id):
+    cur_user = request.user
+    post = Post.objects.get(id=post_id)
+    current_likes = post.likes
+    like = Like.objects.filter(user=cur_user,post=post)
+    liked = like.count()
+    
+    # Check if the user has already liked the post
+    if liked:
+        # If yes, delete the Like object and decrement the likes count
+        like.delete()
+        post.likes -= 1
+        post.save()
+
+    return redirect('index')
+
+
+
 @login_required
 def upload(request):
     
@@ -69,7 +114,7 @@ def other_user(request):
         return render(request, "profile/profile.html", {'profile': new_user_prof, 'allpost': new_user_post, 'post_count': no_of_post,'user':user,'nav_profile':nav_profile_image,'user_followers': user_followers,
         'user_following': user_following,"follow_button_value":follow_button_value})
 
-
+@login_required
 def profile(request):
     cur_user = request.user
     user = User.objects.get(username=cur_user)

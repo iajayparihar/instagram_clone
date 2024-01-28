@@ -4,23 +4,18 @@
 <section class="main">
     <div class="wrapper">
         <div class="left-col">
+            
             <div class="status-wrapper">
+                {% for post in all_posts %}
                 <div class="status-card">
-                    <div class="profile-pic"><img src="{% static 'img/cover 1.png' %}" alt=""></div>
-                    <p class="username">Ajay Parihar</p>
+                    <div class="profile-pic"><img src="{{ post.image.url }}" alt=""></div>
+                    <p class="username">{{ post.user.username }}</p>
                 </div>
-                <div class="status-card">
-                    <div class="profile-pic"><img src="{% static 'img/cover 2.png' %}" alt=""></div>
-                    <p class="username">Vij </p>
-                </div>
-                <div class="status-card">
-                    <div class="profile-pic"><img src="{% static 'img/cover 3.png' %}" alt=""></div>
-                    <p class="username">Rhl</p>
-                </div>
+                {% endfor %}
             </div>
 
             <!-- post card -->
-            <div class="post">
+            {% comment %} <div class="post">
                 <div class="info">
                     <div class="user">
                         <div class="profile-pic"><img src="{% static 'img/ajay.jpg' %}" alt=""></div>
@@ -47,30 +42,52 @@
                     <input type="text" class="comment-box" placeholder="Add a comment">
                     <button class="comment-btn">post</button>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
 
+
+            {% for post in all_posts %}
             <div class="post">
                 <div class="info">
                     <div class="user">
-                        <div class="profile-pic"><img src="img/cover 2.png" alt=""></div>
-                        <p class="username">modern_web_channel</p>
+                        <div class="profile-pic"><img src="{{ post.image.url }}" alt=""></div>
+                        <p class="username">{{ post.user.first_name }} {{ post.user.last_name }}</p>
                     </div>
-                    <img src="img/option.PNG" class="options" alt="">
+                    <img src="{% static 'img/option.PNG' %}" class="options" alt="">
                 </div>
-                <img src="img/cover 2.png" class="post-image" alt="">
+
+                <img src="{{post.image.url}}" style="width:800px;height: 800px;" class="post-image" alt="">
                 <div class="post-content">
                     <div class="reaction-wrapper">
-                        <img src="img/like.PNG" class="icon" alt="">
-                        <img src="img/comment.PNG" class="icon" alt="">
-                        <img src="img/send.PNG" class="icon" alt="">
-                        <img src="img/save.PNG" class="save icon" alt="">
+
+                        {% if post.liked_by_user %}
+                            <a href="{% url 'unlike' post.id %}">
+                                <img src="{% static 'img/unlike.png' %}" class="icon" alt="">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'like' post.id %}">
+                                <img src="{% static 'img/like.PNG' %}" class="icon" alt="">
+                            </a>
+                        {% endif %}
+                            
+                        <!-- <a href="{% url 'like' post.id %}">
+                            <img src="{% static 'img/like.PNG' %}" class="icon" alt="">
+                        </a> -->
+
+                        <img src="{% static 'img/comment.PNG' %}" class="icon" alt="">
+                        <img src="{% static 'img/send.PNG' %}" class="icon" alt="">
+                        <img src="{% static 'img/save.PNG' %}" class="save icon" alt="">
                     </div>
-                    <p class="likes">1,012 likes</p>
-                    <p class="description"><span>username </span> Lorem ipsum dolor sit amet consectetur,
-                        adipisicing elit. Pariatur tenetur veritatis placeat, molestiae impedit aut provident eum
-                        quo natus molestias?</p>
-                    <p class="post-time">2 minutes ago</p>
+                    
+                    {% if post.likes %}
+                    <p class="likes">{{ post.likes }} likes</p>
+                    {% else %}
+                    <p class="likes">0 likes</p>
+
+                    {% endif %}
+                        
+                    <p class="description"><span>@{{post.user.username}} </span> {{post.caption}}</p>
+                    <p class="post-time">{{ post.created_at }}</p>
                 </div>
                 <div class="comment-wrapper">
                     <img src="img/smile.PNG" class="icon" alt="">
@@ -78,7 +95,7 @@
                     <button class="comment-btn">post</button>
                 </div>
             </div>
-
+            {% endfor %}
 
 
         </div>  <!--  end of lest-col -->
@@ -124,16 +141,12 @@
                     
                     <div>
                     <form action="/enter/other_user/" method="get">
-                    <button type="submit" class="username" style="text-align: center; background: none;" name="other_user" value="{{ prof.user.id }}">{{ prof.user }}</button>
+                    <button type="submit" class="username btn btn-primary  " style="text-align: center; background: none;" name="other_user" value="{{ prof.user.id }}">{{ prof.user }}</button>
                     <p class="sub-text">followed by user</p>
                     </form>
                 </div>
 
-                    <form action="follow_friendship/{{prof.user.username}}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="action-btn">Follow</button>
-                    </form>
-
+                    
                 </div>
                 
                 {% endif %}
