@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('register.urls')),
     path('enter/', include('post.urls')),
+    path('message/',include('Message.urls')),
 ]
 
 if settings.DEBUG == True:

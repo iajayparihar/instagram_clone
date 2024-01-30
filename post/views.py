@@ -81,9 +81,6 @@ def upload(request):
             
     return render(request,'upload/upload.html')
 
-def chat(request):
-    return render(request,'chat/chat.html')
-
 
 def other_user(request):
     if request.method == "GET":
