@@ -1,10 +1,13 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404, HttpResponseRedirect
 from django.contrib import messages
 # from post.models import User
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login, logout
 from post.models import Profile
 from .forms import ProfileForm
+from django.urls import reverse
+from post.views import index
+
 # login -> Session maintain
 #authenticate -> password decription
 
@@ -89,7 +92,7 @@ def user_login(request):
         return redirect('/')
     else:
         login(request,user)
-        return render(request,'index.html')
+        return HttpResponseRedirect(reverse(index))
 
 def user_logout(request):
     logout(request)

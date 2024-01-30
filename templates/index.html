@@ -59,14 +59,27 @@
 
                     {% endif %}
                         
-                    <p class="description"><span>@{{post.user.username}} </span> {{post.caption}}</p>
-                    <p class="post-time">{{ post.created_at }}</p>
+                    <p class="description"><span>@{{post.user.username}} </span> <br> {{post.caption}}</p>
+                    
+                    {% if cmt %}
+                        {% for c in cmt %}
+                            {% if c and c.post == post %}
+                                <p class="post-time">@{{c.user.username}}  {{ c.text }} </p>    
+                            {% endif %}
+                        {% endfor %}
+                {% else %}
+                    <p class="post-time">0 comments</p>    
+                {% endif %}
+
                 </div>
-                <div class="comment-wrapper">
-                    <img src="img/smile.PNG" class="icon" alt="">
-                    <input type="text" class="comment-box" placeholder="Add a comment">
-                    <button class="comment-btn">post</button>
-                </div>
+                <form action="{% url 'comment' post.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="comment-wrapper">
+                        <img src="{% static 'img/smile.PNG' %}" class="icon" alt="img not found">
+                        <input type="text" name="user_cmt" class="comment-box" placeholder="Add a comment">
+                        <button type="submit" class="comment-btn" >post</button>
+                    </div>
+                </form>
             </div>
             {% endfor %}
 
