@@ -15,11 +15,13 @@ class Profile(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    caption = models.TextField(blank=True)
+    caption = models.TextField(blank=True) 
     image = models.ImageField(upload_to='posts/%Y/%m/%d/')
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
-    
+    #recent post come's first 
+    class Meta:
+        ordering = ['-created_at']
     def __str__(self):
         return f"{self.user.username} - {self.created_at}"
 
@@ -38,7 +40,8 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='user_likes')
     post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='post_likes')
-    
+    def __str__(self):
+        return f"sender = {self.user.first_name}, receiver =  {self.post.user.first_name}"
 
 class Friendship(models.Model):
     sender = models.ForeignKey(User,on_delete=models.CASCADE, related_name='sent_requests')

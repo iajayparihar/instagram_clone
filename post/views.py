@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Post,Comment,User,Profile,Friendship,Like
+from .models import *
 from django.http import HttpResponseRedirect
 # Create your views here.
 from django.contrib.auth.decorators import login_required
@@ -16,17 +16,18 @@ def follow_friendship(request,receiver):
     
 @login_required
 def index(request):
-    cur_user = request.user
+    user = request.user
     all_profile = Profile.objects.all()
-    prof = Profile.objects.get(user=cur_user)
+    prof = Profile.objects.get(user=user)
 
     # showing post in index page
     all_post = Post.objects.all()
-    
     for post in all_post:
-        post.liked_by_user = Like.objects.filter(user=cur_user, post=post).exists()
+        post.liked_by_user = Like.objects.filter(user=user, post=post).exists()
 
-    return render(request,'index.html',{'profile': prof,'all_profile':all_profile,'all_posts':all_post})
+    all_cmt = Comment.objects.all()    
+
+    return render(request,'index.html',{'profile': prof,'all_profile':all_profile,'all_posts':all_post,'cmt':all_cmt})
 
 
 @login_required
@@ -178,3 +179,19 @@ def reels(request):
 #here we can save over file to database / redirect to same page again
 def file_upload(request):
     return render(request,"upload/upload.html")
+
+
+
+
+def comment(request,post_id):
+    if request.method == "POST":
+        user = request.user
+        post = Post.objects.get(id=post_id)
+        # cmt from index 
+        cmt = request.POST.get('user_cmt')
+        
+        mod_cmt = Comment.objects.create(user=user,post=post,text=cmt)
+        mod_cmt.save()
+
+
+    return HttpResponseRedirect(reverse(index))
