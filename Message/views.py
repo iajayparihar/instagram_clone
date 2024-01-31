@@ -27,3 +27,7 @@ def inbox(request):
         return render(request, 'chat/direct.html', context )
             
     return render(request, 'chat/direct.html' )
+
+def page(request):
+    return render(request, 'chat/direct.html' )
+    
